@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    :root { --green: #0f0; --bg: #000; }
+    body {
+      margin: 0; background: #111; color: var(--green);
+      font-family: 'Courier New', monospace;
+      display: flex; justify-content: center; align-items: center; height: 100vh;
+      overflow: hidden;
+    }
+    #device {
+      position: relative; width: 500px; height: 350px;
+      background: var(--bg); border: 2px solid var(--green);
+      overflow: hidden; box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+    }
+    #top-bar {
+      position: absolute; top: 0; width: 100%; height: 40px;
+      padding: 0 12px; display: flex; justify-content: space-between; 
+      align-items: center; font-size: 14px; box-sizing: border-box;
+      background: rgba(0,0,0,0.9); z-index: 150; border-bottom: 1px solid #222;
+    }
+    
+    /* FIX: Sidebar hidden much further to the right */
+    #sidebar {
+      position: absolute; right: -260px; top: 0; width: 240px; height: 100%;
+      background: #080808; border-left: 2px solid var(--green);
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      z-index: 200; padding: 50px 20px 20px; box-sizing: border-box;
+    }
+    #sidebar.open { right: 0; }
+
+    .menu-item { 
+      cursor: pointer; padding: 12px; display: block; width: 100%; 
+      text-align: left; background: #111; color: var(--green); 
+      border: 1px solid var(--green); font-family: inherit; font-size: 14px;
+      margin-bottom: 10px; transition: 0.2s;
+    }
+    .menu-item:hover { background: var(--green); color: #000; }
+
+    #msg-log {
+      position: absolute; bottom: 5px; width: 100%;
+      text-align: center; font-size: 12px; font-weight: bold;
+      pointer-events: none; z-index: 100;
+      text-shadow: 1px 1px #000;
+    }
+    .msg-fade { animation: fadeOut 2s forwards; }
+        @keyframes fadeOut { 
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+    }
+
+    /* Catch Bar */
+    #catch-ui {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      width: 250px; height: 20px; border: 2px solid var(--green);
+      display: none; z-index: 50; background: #000;
+    }
+    #catch-progress { width: 0%; height: 100%; background: var(--green); transition: width 0.1s; }
+    #catch-label { position: absolute; width: 100%; text-align: center; font-size: 10px; top: -15px; }
+    
+    .sub-page {
+      position: absolute; inset: 0; background: var(--bg); display: none;
+      padding: 60px 25px 25px; z-index: 180; overflow-y: auto;
+    }
+    .sub-page.active { display: block; }
+
+    #game-port { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 5; }
+
+    .fish {
+      position: absolute; font-size: 28px; cursor: pointer;
+      user-select: none; transition: top 2.5s linear, left 2.5s linear;
+      z-index: 10; filter: drop-shadow(0 0 5px var(--green));
+    }
+    .shop-item { border: 1px solid var(--green); padding: 10px; margin-bottom: 10px; background: #050505; }
+  </style>
+</head>
+<body>
+  <div id="device">
+    <div id="top-bar">
+      <span>$<span id="gold">0</span> | <span id="rod-name">Twig Pole</span></span>
+      <span id="menu-toggle" style="font-size: 24px; cursor:pointer" onclick="toggleMenu()">≡</span>
+    </div>
+
+    <div id="game-port"></div>
+    <div id="msg-log">...</div>
+
+    <div id="catch-ui">
+      <div id="catch-label">REELING IN...</div>
+      <div id="catch-progress"></div>
+    </div>
+
+    <div id="sidebar">
+    <div style="font-size: 18px; margin-bottom: 20px; border-bottom: 1px solid var(--green); padding-bottom: 10px;">POCKET OS</div>
+    <button class="menu-item" onclick="showPage('bestiary')">⌹ BESTIARY</button>
+    <button class="menu-item" onclick="showPage('inventory')">⌸ INVENTORY</button>
+    <button class="menu-item" onclick="showPage('shop')">⌬ UPGRADES</button>
+    
+    <button class="menu-item" onclick="toggleMenu()" style="margin-top: 20px; border-color: #444; color: #666;">↩ BACK TO GAME</button>
+    </div>
+
+    <div id="bestiary" class="sub-page">
+      <button class="menu-item" onclick="closePage()">[X] BACK TO GAME</button>
+      <h3 style="border-bottom: 1px solid var(--green)">SPECIES TRACKER</h3>
+      <div id="bestiary-list"></div>
+    </div>
+
+    <div id="inventory" class="sub-page">
+      <button class="menu-item" onclick="closePage()">[X] BACK TO GAME</button>
+      <h3 style="border-bottom: 1px solid var(--green)">YOUR BUCKET</h3>
+      <div id="inv-list"></div>
+      <button class="menu-item" onclick="sellAll()" style="margin-top:20px; background: var(--green); color: #000;">SELL ALL FOR COINS</button>
+    </div>
+
+    <div id="shop" class="sub-page">
+      <button class="menu-item" onclick="closePage()">[X] BACK TO GAME</button>
+      <h3 style="border-bottom: 1px solid var(--green)">ROD SHOP</h3>
+      <div id="shop-list"></div>
+    </div>
+  </div>
+  <script src="renderer.js"></script>
+</body>
+</html>
