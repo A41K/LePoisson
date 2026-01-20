@@ -1,26 +1,44 @@
 const FISH_TYPES = [
-  { id: "minnow", s: "🐟", n: "Minnow", p: 5, c: 0.3, clicks: 3, speed: 2500, decay: 0.1, agility: 0.1 },
-  { id: "cod", s: "🐟", n: "Cod", p: 12, c: 0.15, clicks: 4, speed: 2000, decay: 0.15, agility: 0.2 },
-  { id: "clown", s: "🤡", n: "Clownfish", p: 25, c: 0.1, clicks: 5, speed: 1800, decay: 0.2, agility: 0.3 },
-  { id: "salmon", s: "🐟", n: "Salmon", p: 40, c: 0.08, clicks: 6, speed: 1500, decay: 0.25, agility: 0.4 },
-  { id: "tuna", s: "🍣", n: "Tuna", p: 60, c: 0.06, clicks: 8, speed: 1200, decay: 0.3, agility: 0.5 },
-  { id: "blowfish", s: "🐡", n: "Blowfish", p: 100, c: 0.05, clicks: 10, speed: 1000, decay: 0.4, agility: 0.7 },
-  { id: "eel", s: "🐍", n: "Eel", p: 150, c: 0.04, clicks: 12, speed: 800, decay: 0.5, agility: 0.8 },
-  { id: "octopus", s: "🐙", n: "Octopus", p: 250, c: 0.03, clicks: 15, speed: 700, decay: 0.6, agility: 0.9 },
-  { id: "shark", s: "🦈", n: "Shark", p: 500, c: 0.02, clicks: 25, speed: 500, decay: 0.8, agility: 1.2 },
-  { id: "whale", s: "🐋", n: "Whale", p: 1000, c: 0.01, clicks: 40, speed: 400, decay: 1.0, agility: 1.5 },
-  { id: "marlin", s: "🗡️", n: "Marlin", p: 450, c: 0.03, clicks: 20, speed: 600, decay: 0.7, agility: 1.1 },
-  { id: "crab", s: "🦀", n: "Crab", p: 30, c: 0.1, clicks: 4, speed: 2200, decay: 0.2, agility: 0.2 },
-  { id: "lobster", s: "🦞", n: "Lobster", p: 80, c: 0.05, clicks: 7, speed: 1400, decay: 0.3, agility: 0.4 },
-  { id: "squid", s: "🦑", n: "Squid", p: 200, c: 0.04, clicks: 11, speed: 900, decay: 0.45, agility: 0.6 },
-  { id: "dolphin", s: "🐬", n: "Dolphin", p: 600, c: 0.02, clicks: 30, speed: 500, decay: 0.9, agility: 1.3 }
+  // --- TIER 1: COMMON (Easy practice) ---
+  { id: "anchovy", s: "🐟", n: "Anchovy", p: 10, c: 0.22, clicks: 4, speed: 2000, decay: 0.05, agility: 0.1, stars: 1 },
+  { id: "minnow", s: "🐟", n: "Minnow", p: 15, c: 0.18, clicks: 6, speed: 1800, decay: 0.08, agility: 0.15, stars: 1 },
+  { id: "shrimp", s: "🦐", n: "Shrimp", p: 25, c: 0.12, clicks: 5, speed: 1600, decay: 0.1, agility: 0.25, stars: 1 },
+  { id: "crab", s: "🦀", n: "Crab", p: 45, c: 0.1, clicks: 8, speed: 2200, decay: 0.12, agility: 0.1, stars: 1 },
+
+  // --- TIER 2: UNCOMMON (Start of challenge) ---
+  { id: "clown", s: "🐠", n: "Clownfish", p: 80, c: 0.08, clicks: 12, speed: 1500, decay: 0.15, agility: 0.35, stars: 2 },
+  { id: "carp", s: "🐟", n: "Carp", p: 110, c: 0.07, clicks: 15, speed: 1400, decay: 0.18, agility: 0.3, stars: 2 },
+  { id: "jelly", s: "🎐", n: "Jellyfish", p: 160, c: 0.06, clicks: 18, speed: 1300, decay: 0.2, agility: 0.5, stars: 2 },
+  { id: "lobster", s: "🦞", n: "Lobster", p: 200, c: 0.05, clicks: 14, speed: 1400, decay: 0.22, agility: 0.2, stars: 2 },
+
+  // --- TIER 3: RARE (Needs Gear) ---
+  { id: "puffer", s: "🐡", n: "Puffer", p: 400, c: 0.035, clicks: 25, speed: 1000, decay: 0.35, agility: 0.7, stars: 3 },
+  { id: "squid", s: "🦑", n: "Squid", p: 550, c: 0.03, clicks: 30, speed: 900, decay: 0.4, agility: 0.8, stars: 3 },
+  { id: "eel", s: "🔌", n: "Electric Eel", p: 750, c: 0.025, clicks: 35, speed: 700, decay: 0.5, agility: 1.0, stars: 3 },
+  { id: "octopus", s: "🐙", n: "Octopus", p: 900, c: 0.02, clicks: 40, speed: 800, decay: 0.45, agility: 0.6, stars: 3 },
+
+  // --- TIER 4: EPIC (High Speed) ---
+  { id: "angler", s: "🏮", n: "Angler", p: 1500, c: 0.015, clicks: 45, speed: 600, decay: 0.6, agility: 1.2, stars: 4 },
+  { id: "sword", s: "🗡️", n: "Swordfish", p: 2200, c: 0.012, clicks: 55, speed: 450, decay: 0.7, agility: 1.5, stars: 4 },
+  { id: "manta", s: "🦇", n: "Manta Ray", p: 2800, c: 0.01, clicks: 50, speed: 500, decay: 0.65, agility: 1.1, stars: 4 },
+  { id: "hammerhead", s: "🔨", n: "Hammerhead", p: 3500, c: 0.008, clicks: 65, speed: 400, decay: 0.8, agility: 1.4, stars: 4 },
+
+  // --- TIER 5: LEGENDARY (The Ultimate Hunt) ---
+  { id: "goldfish", s: "✨", n: "Gold Fish", p: 5000, c: 0.005, clicks: 30, speed: 1200, decay: 0.3, agility: 2.0, stars: 5 },
+  { id: "whale", s: "🐳", n: "Ancient Whale", p: 8000, c: 0.004, clicks: 90, speed: 500, decay: 1.0, agility: 0.8, stars: 5 },
+  { id: "axolotl", s: "🦎", n: "Axolotl", p: 12000, c: 0.003, clicks: 20, speed: 1500, decay: 0.1, agility: 3.0, stars: 5 },
+  { id: "ghost_fish", s: "👻", n: "Ghost Fish", p: 15000, c: 0.002, clicks: 50, speed: 200, decay: 1.2, agility: 3.5, stars: 5 },
+  { id: "kraken", s: "🦑", n: "Mini Kraken", p: 25000, c: 0.0015, clicks: 130, speed: 300, decay: 1.5, agility: 1.8, stars: 5 },
+  { id: "dragon_carp", s: "🐲", n: "Dragon Carp", p: 50000, c: 0.001, clicks: 160, speed: 450, decay: 1.8, agility: 1.3, stars: 5 },
+  { id: "sea_serpent", s: "🐉", n: "Sea Serpent", p: 100000, c: 0.0005, clicks: 250, speed: 250, decay: 2.5, agility: 2.2, stars: 5 }
 ];
 
 const RODS = [
   { name: "Twig Pole", power: 1, price: 0 },
-  { name: "Fiberglass", power: 2, price: 200 },
-  { name: "Carbon Fiber", power: 4, price: 1000 },
-  { name: "Master Rod", power: 10, price: 5000 }
+  { name: "Fiberglass", power: 2, price: 100 },
+  { name: "Carbon Fiber", power: 4, price: 2500 },
+  { name: "Master Rod", power: 8, price: 10000 },
+  { name: "The Trident", power: 10, price: 10000 }
 ];
 
 let gold = 0, inventory = [], discovered = new Set(), currentRod = RODS[0];
@@ -34,6 +52,8 @@ document.addEventListener('mousemove', (e) => {
   mouseX = e.clientX - rect.left;
   mouseY = e.clientY - rect.top;
 });
+
+
 
 function log(text, color = "var(--green)") {
   const msgLog = document.getElementById("msg-log");
@@ -74,7 +94,6 @@ function spawnFish() {
   moveFishAI();
 }
 
-// Ensure these functions are available globally for HTML onclicks
 window.toggleMenu = function() {
   const side = document.getElementById("sidebar");
   const btn = document.getElementById("menu-toggle");
@@ -111,6 +130,12 @@ window.sellAll = function() {
   window.updateUI();
 };
 
+window.closeApp = () => {
+  const { remote } = require('electron'); // Note: Only works if enableRemoteModule is true
+  // Better way for modern Electron:
+  window.close(); 
+};
+
 window.buyRod = function(name) {
   const rod = RODS.find(r => r.name === name);
   if (gold >= rod.price && currentRod.name !== rod.name) {
@@ -120,57 +145,179 @@ window.buyRod = function(name) {
   }
 };
 
+
+const STICKERS = [
+  { id: "star", s: "⭐", p: 50 },
+  { id: "heart", s: "❤️", p: 50 },
+  { id: "fire", s: "🔥", p: 150 },
+  { id: "skull", s: "💀", p: 300 },
+  { id: "crown", s: "👑", p: 1000 },
+  { id: "alien", s: "👽", p: 2500 },
+  { id: "diamond", s: "💎", p: 5000 }
+];
+
+let myStickers = [];
+
+// Add this to your updateUI function
+function updateStickerShop() {
+  const list = document.getElementById("sticker-shop-list");
+  list.innerHTML = STICKERS.map(s => `
+    <div class="shop-item">
+      <span>${s.s} Sticker</span>
+      <button class="menu-item" style="width:auto; margin:0; padding:5px 10px;" 
+        onclick="buySticker('${s.id}')" ${gold < s.p ? 'disabled' : ''}>
+        BUY $${s.p}
+      </button>
+    </div>
+  `).join("");
+}
+
+// Modify your existing updateUI to call this
+const originalUpdateUI = updateUI;
+updateUI = function() {
+  originalUpdateUI();
+  updateStickerShop();
+};
+
+window.buySticker = function(id) {
+  const sticker = STICKERS.find(s => s.id === id);
+  if (gold >= sticker.p) {
+    gold -= sticker.p;
+    placeSticker(sticker.s);
+    log(`BOUGHT ${sticker.s} STICKER!`);
+    updateUI();
+  }
+};
+
+function placeSticker(symbol) {
+  const layer = document.getElementById("sticker-layer");
+  const el = document.createElement("div");
+  el.className = "sticker";
+  el.innerText = symbol;
+  
+  // Default placement (Center)
+  el.style.left = "230px";
+  el.style.top = "150px";
+  el.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+
+  // Add Dragging Event Listeners
+  el.addEventListener('mousedown', startStickerDrag);
+
+  layer.appendChild(el);
+}
+
+let activeSticker = null;
+let offset = { x: 0, y: 0 };
+
+function startStickerDrag(e) {
+  activeSticker = e.target;
+  // Calculate offset so the sticker doesn't "jump" to the cursor corner
+  const rect = activeSticker.getBoundingClientRect();
+  const deviceRect = document.getElementById('device').getBoundingClientRect();
+  
+  offset.x = e.clientX - rect.left;
+  offset.y = e.clientY - rect.top;
+  
+  document.addEventListener('mousemove', dragSticker);
+  document.addEventListener('mouseup', stopStickerDrag);
+}
+
+function dragSticker(e) {
+  if (!activeSticker) return;
+  
+  const deviceRect = document.getElementById('device').getBoundingClientRect();
+  
+  // Calculate new position relative to the device container
+  let newX = e.clientX - deviceRect.left - offset.x;
+  let newY = e.clientY - deviceRect.top - offset.y;
+
+  // Optional: keep stickers within device bounds
+  newX = Math.max(-10, Math.min(480, newX));
+  newY = Math.max(-10, Math.min(330, newY));
+
+  activeSticker.style.left = newX + "px";
+  activeSticker.style.top = newY + "px";
+}
+
+function stopStickerDrag() {
+  activeSticker = null;
+  document.removeEventListener('mousemove', dragSticker);
+  document.removeEventListener('mouseup', stopStickerDrag);
+}
+
 function moveFishAI() {
   if (!activeFish || !activeFish.parentNode) return;
 
   const fishX = parseFloat(activeFish.style.left);
   const fishY = parseFloat(activeFish.style.top);
-  
-  // Distance from mouse
   const dx = mouseX - fishX;
   const dy = mouseY - fishY;
-  const dist = Math.sqrt(dx*dx + dy*dy);
+  const dist = Math.sqrt(dx * dx + dy * dy);
 
   let nextX = fishX;
   let nextY = fishY;
 
-  // EVASION: If mouse is close, run away!
-  if (dist < 150) {
-    const moveX = (dx / dist) * (currentFishType.agility * 80);
-    const moveY = (dy / dist) * (currentFishType.agility * 80);
-    nextX -= moveX;
-    nextY -= moveY;
-  } else {
-    // Random idle drifting
-    nextX += (Math.random() - 0.5) * 50;
-    nextY += (Math.random() - 0.5) * 50;
+  // --- REWARD MECHANIC: The "Rest" Chance ---
+  // 30% chance the fish stays still for a moment, giving the player a window.
+  if (battleActive && Math.random() < 0.3) {
+    setTimeout(moveFishAI, 400); 
+    return;
   }
 
-  // Keep in bounds
-  nextX = Math.max(10, Math.min(460, nextX));
-  nextY = Math.max(50, Math.min(280, nextY));
+  if (battleActive) {
+    // Lowered intensity so it's not impossible to track
+    const struggleIntensity = currentFishType.agility * 40; 
+    nextX += (Math.random() - 0.5) * struggleIntensity;
+    nextY += (Math.random() - 0.5) * struggleIntensity;
+    activeFish.style.transition = "all 0.3s ease-out"; // Slightly slower for fairness
+  } else {
+    activeFish.style.transition = "top 2s linear, left 2s linear";
+    // Only move away if mouse is very close (reduced from 120 to 80)
+    if (dist < 80) {
+      const moveX = (dx / dist) * (currentFishType.agility * 60);
+      const moveY = (dy / dist) * (currentFishType.agility * 60);
+      nextX -= moveX;
+      nextY -= moveY;
+    } else {
+      nextX += (Math.random() - 0.5) * 20;
+      nextY += (Math.random() - 0.5) * 20;
+    }
+  }
+
+  nextX = Math.max(20, Math.min(440, nextX));
+  nextY = Math.max(60, Math.min(280, nextY));
 
   activeFish.style.left = nextX + "px";
   activeFish.style.top = nextY + "px";
 
-  // Agility affects how fast the AI "thinks"
-  const thinkSpeed = battleActive ? 100 : Math.max(200, currentFishType.speed / 5);
-  setTimeout(moveFishAI, thinkSpeed);
+  // Slower reaction times to give player time to move their hand
+  let reactionTime = battleActive ? 400 : 600;
+  setTimeout(moveFishAI, reactionTime);
 }
+
+let decayPaused = false;
 
 function startBattle(type, el) {
   if (!battleActive) {
     battleActive = true;
     totalNeeded = type.clicks;
-    clicksLeft = 1;
+    clicksLeft = totalNeeded * 0.2; // Start with 20% progress already filled
+    document.getElementById('sticker-layer').style.pointerEvents = 'none';
     document.getElementById("catch-ui").style.display = "block";
     
     decayInterval = setInterval(() => {
-      clicksLeft -= type.decay;
-      if (clicksLeft <= 0) fishEscaped();
-      updateCatchBar();
+      if (!decayPaused) { // Only decay if not paused
+        clicksLeft -= type.decay;
+        if (clicksLeft <= 0) fishEscaped();
+        updateCatchBar();
+      }
     }, 100);
   }
+
+  // --- FAIRNESS: Click Buffer ---
+  // Every click pauses decay briefly so you don't lose progress while chasing the fish
+  decayPaused = true;
+  setTimeout(() => { decayPaused = false; }, 400);
 
   clicksLeft += currentRod.power;
   if (clicksLeft >= totalNeeded) fishCaught(type);

@@ -4,30 +4,45 @@
   <meta charset="UTF-8">
   <style>
     :root { --green: #0f0; --bg: #000; }
+    
     body {
-      margin: 0; background: #111; color: var(--green);
-      font-family: 'Courier New', monospace;
-      display: flex; justify-content: center; align-items: center; height: 100vh;
-      overflow: hidden;
+      margin: 0; padding: 0; background: transparent; display: flex;
+      justify-content: center; align-items: center; height: 100vh;
+      color: var(--green); /* Ensures global text is green */
+      /* Pixel art settings */
+      image-rendering: pixelated;font-family: 'Press Start 2P', cursive;
     }
     #device {
       position: relative; width: 500px; height: 350px;
-      background: var(--bg); border: 2px solid var(--green);
+      background: var(--bg); border: 4px solid var(--green);
       overflow: hidden; box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+      box-sizing: border-box;
     }
+
     #top-bar {
-      position: absolute; top: 0; width: 100%; height: 40px;
-      padding: 0 12px; display: flex; justify-content: space-between; 
-      align-items: center; font-size: 14px; box-sizing: border-box;
-      background: rgba(0,0,0,0.9); z-index: 150; border-bottom: 1px solid #222;
+      position: absolute; top: 0; left: 0; width: 100%; height: 40px;
+      padding: 0 12px; display: flex; justify-content: space-between;
+      align-items: center; background: #111; z-index: 500;
+      border-bottom: 2px solid var(--green); box-sizing: border-box;
+
     }
     
-    /* FIX: Sidebar hidden much further to the right */
     #sidebar {
-      position: absolute; right: -260px; top: 0; width: 240px; height: 100%;
-      background: #080808; border-left: 2px solid var(--green);
-      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-      z-index: 200; padding: 50px 20px 20px; box-sizing: border-box;
+      position: absolute; right: -260px; top: 0;
+      width: 240px; height: 100%; background: #080808;
+      border-left: 2px solid var(--green); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      z-index: 500; padding: 40px 20px 20px; box-sizing: border-box;
+      overflow-y: auto; overflow-x: hidden;
+    }
+    #sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+    #sidebar::-webkit-scrollbar-track {
+      background: #000;
+    }
+    #sidebar::-webkit-scrollbar-thumb {
+      background: var(--green);
+      border-radius: 0;
     }
     #sidebar.open { right: 0; }
 
@@ -66,19 +81,41 @@
     }
     .sub-page.active { display: block; }
 
-    #game-port { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 5; }
+    #game-port { 
+      width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 5;
+      border: 10px solid #222; /* Thick arcade-style internal bezel */
+      box-sizing: border-box;
+    }
 
+    #sticker-layer {
+      position: absolute; inset: 0; pointer-events: none; z-index: 80;
+}
+    .sticker {
+      position: absolute; font-size: 24px; 
+      pointer-events: auto; /* Changed from none */
+      cursor: grab;
+      filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.5));
+      user-select: none;
+      z-index: 85; /* Above the frame but below menus */
+    }
+    .sticker:active { cursor: grabbing; }
+
+    .shop-item { 
+      border: 1px solid var(--green); padding: 10px; margin-bottom: 10px; 
+      background: #050505; font-size: 10px; display: flex; 
+      justify-content: space-between; align-items: center;
+    }
     .fish {
       position: absolute; font-size: 28px; cursor: pointer;
       user-select: none; transition: top 2.5s linear, left 2.5s linear;
       z-index: 10; filter: drop-shadow(0 0 5px var(--green));
     }
-    .shop-item { border: 1px solid var(--green); padding: 10px; margin-bottom: 10px; background: #050505; }
   </style>
 </head>
 <body>
   <div id="device">
     <div id="top-bar">
+      <span onclick="window.closeApp()" style="color: #f55; cursor: pointer; margin-right: 10px;">✖</span>
       <span>$<span id="gold">0</span> | <span id="rod-name">Twig Pole</span></span>
       <span id="menu-toggle" style="font-size: 24px; cursor:pointer" onclick="toggleMenu()">≡</span>
     </div>
@@ -92,12 +129,12 @@
     </div>
 
     <div id="sidebar">
-    <div style="font-size: 18px; margin-bottom: 20px; border-bottom: 1px solid var(--green); padding-bottom: 10px;">POCKET OS</div>
-    <button class="menu-item" onclick="showPage('bestiary')">⌹ BESTIARY</button>
-    <button class="menu-item" onclick="showPage('inventory')">⌸ INVENTORY</button>
-    <button class="menu-item" onclick="showPage('shop')">⌬ UPGRADES</button>
-    
-    <button class="menu-item" onclick="toggleMenu()" style="margin-top: 20px; border-color: #444; color: #666;">↩ BACK TO GAME</button>
+      <div style="font-size: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--green); padding-bottom: 10px;">POCKET OS</div>
+      <button class="menu-item" onclick="showPage('bestiary')">⌹ BESTIARY</button>
+      <button class="menu-item" onclick="showPage('inventory')">⌸ INVENTORY</button>
+      <button class="menu-item" onclick="showPage('shop')">⌬ ROD SHOP</button>
+      <button class="menu-item" onclick="showPage('sticker-shop')">❈ STICKERS</button> <!-- NEW -->
+      <button class="menu-item" onclick="toggleMenu()" style="margin-top: 20px; border-color: #444; color: #666;">↩ BACK</button>
     </div>
 
     <div id="bestiary" class="sub-page">
@@ -118,6 +155,14 @@
       <h3 style="border-bottom: 1px solid var(--green)">ROD SHOP</h3>
       <div id="shop-list"></div>
     </div>
+    <div id="sticker-layer"></div> <!-- Layer where stickers appear -->
+    <!-- New Sticker Shop Page -->
+    <div id="sticker-shop" class="sub-page">
+      <button class="menu-item" onclick="closePage()">[X] CLOSE</button>
+      <h3 style="border-bottom: 1px solid var(--green); font-size: 12px;">STICKER SHOP</h3>
+      <div id="sticker-shop-list"></div>
+    </div>
+
   </div>
   <script src="renderer.js"></script>
 </body>
