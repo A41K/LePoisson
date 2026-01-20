@@ -53,8 +53,6 @@ document.addEventListener('mousemove', (e) => {
   mouseY = e.clientY - rect.top;
 });
 
-
-
 function log(text, color = "var(--green)") {
   const msgLog = document.getElementById("msg-log");
   msgLog.innerText = text;
@@ -142,6 +140,7 @@ window.buyRod = function(name) {
     gold -= rod.price;
     currentRod = rod;
     window.updateUI();
+    saveGame(); // AUTO-SAVE
   }
 };
 
@@ -186,6 +185,7 @@ window.buySticker = function(id) {
     placeSticker(sticker.s);
     log(`BOUGHT ${sticker.s} STICKER!`);
     updateUI();
+    saveGame(); // AUTO-SAVE
   }
 };
 
@@ -243,6 +243,7 @@ function stopStickerDrag() {
   activeSticker = null;
   document.removeEventListener('mousemove', dragSticker);
   document.removeEventListener('mouseup', stopStickerDrag);
+  saveGame(); // AUTO-SAVE
 }
 
 function moveFishAI() {
@@ -335,6 +336,7 @@ function fishCaught(type) {
   log(`CAUGHT: ${type.s} ${type.n}!`, "var(--green)");
   spawnFish();
   updateUI();
+  saveGame(); // AUTO-SAVE
 }
 
 function fishEscaped() {
@@ -364,23 +366,61 @@ function updateUI() {
   `).join("");
 }
 
-function buyRod(name) {
-  const rod = RODS.find(r => r.name === name);
-  if (gold >= rod.price && currentRod.name !== rod.name) {
-    gold -= rod.price;
-    currentRod = rod;
-    updateUI();
-  }
+// --- SAVING LOGIC ---
+function saveGame() {
+  const stickerData = [];
+  document.querySelectorAll(".sticker").forEach((el) => {
+    stickerData.push({
+      s: el.innerText,
+      left: el.style.left,
+      top: el.style.top,
+      transform: el.style.transform,
+    });
+  });
+
+  const gameState = {
+    gold: gold,
+    inventory: inventory,
+    discovered: Array.from(discovered),
+    currentRodName: currentRod.name,
+    stickers: stickerData,
+  };
+
+  localStorage.setItem("pixel_fishing_save", JSON.stringify(gameState));
 }
 
-function sellAll() {
-  const total = inventory.reduce((sum, f) => sum + f.p, 0);
-  gold += total;
-  inventory = [];
-  alert(`Sold all fish for $${total}!`);
+function loadGame() {
+  const savedData = localStorage.getItem("pixel_fishing_save");
+  if (!savedData) return;
+
+  const data = JSON.parse(savedData);
+
+  // Restore Gold & Rod
+  gold = data.gold;
+  inventory = data.inventory || [];
+  discovered = new Set(data.discovered || []);
+  currentRod = RODS.find((r) => r.name === data.currentRodName) || RODS[0];
+
+  // Restore Stickers
+  const layer = document.getElementById("sticker-layer");
+  layer.innerHTML = "";
+  if (data.stickers) {
+    data.stickers.forEach((s) => {
+      const el = document.createElement("div");
+      el.className = "sticker";
+      el.innerText = s.s;
+      el.style.left = s.left;
+      el.style.top = s.top;
+      el.style.transform = s.transform;
+      el.addEventListener("mousedown", startStickerDrag);
+      layer.appendChild(el);
+    });
+  }
+
   updateUI();
 }
 
 // Start
+loadGame();
 spawnFish();
 updateUI();
