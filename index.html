@@ -75,6 +75,31 @@
             100% { opacity: 0; transform: translateY(-10px); }
     }
 
+    /* --- ART STYLES --- */
+    /* Default (Matrix Green) is already your :root variables */
+
+    .theme-gameboy { --green: #9bbc0f; --bg: #8bac0f; }
+    .theme-virtualboy { --green: #ff0000; --bg: #200000; }
+    .theme-ocean { --green: #00ffff; --bg: #002244; }
+    .theme-gold { --green: #ffcc00; --bg: #332200; }
+
+    /* Keep shop text black inside buttons/previews if desired */
+    .menu-item:hover {
+      background: var(--green);
+      color: #000; /* Text turns black when background is green */
+    }
+
+    /* Ensure fish and stickers ignore the theme filters */
+    .fish, .sticker {
+      filter: none !important;
+      color: initial !important;
+    }
+
+    /* If you want the text inside shop items to always be black, use this: */
+    .shop-item span, .shop-item b {
+      color: var(--green); /* Or #000 if you prefer black text on the background */
+    }
+
     /* Catch Bar */
     #catch-ui {
       position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
@@ -163,6 +188,7 @@
       <button class="menu-item" onclick="showPage('inventory')">⌸ INVENTORY</button>
       <button class="menu-item" onclick="showPage('shop')">⌬ ROD SHOP</button>
       <button class="menu-item" onclick="showPage('sticker-shop')">❈ STICKERS</button> <!-- NEW -->
+      <button class="menu-item" onclick="showPage('art-shop')">▧ ART STYLES</button>
       <button class="menu-item" onclick="toggleMenu()" style="margin-top: 20px; border-color: #444; color: #666;">↩ BACK</button>
     </div>
 
@@ -190,6 +216,11 @@
       <button class="menu-item" onclick="closePage()">[X] CLOSE</button>
       <h3 style="border-bottom: 1px solid var(--green); font-size: 12px;">STICKER SHOP</h3>
       <div id="sticker-shop-list"></div>
+    </div>
+    <div id="art-shop" class="sub-page">
+      <button class="menu-item" onclick="closePage()">[X] CLOSE</button>
+      <h3 style="border-bottom: 1px solid var(--green); font-size: 12px;">PALETTE SHOP</h3>
+      <div id="art-shop-list"></div>
     </div>
 
   </div>
